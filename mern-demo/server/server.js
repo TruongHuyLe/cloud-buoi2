@@ -1,3 +1,6 @@
+const crypto = require('crypto');
+global.crypto = crypto;
+
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
@@ -11,17 +14,15 @@ const PORT = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 
-// API Test (Câu 22)
+// API Test
 app.get("/api/hello", (req, res) => {
   res.json({ message: "Backend đang hoạt động!" });
 });
 
-// Kết nối MongoDB Atlas (Câu 33)
-mongoose.connect(process.env.MONGODB_URI)
+// Kết nối MongoDB Atlas
+mongoose.connect(process.env.MONGO_URI)   // dùng đúng tên biến trong .env
   .then(() => {
     console.log("✅ Kết nối MongoDB Atlas thành công!");
-
-    // Chỉ chạy server khi kết nối Database thành công
     app.listen(PORT, () => {
       console.log(`🚀 Server đang chạy trên http://localhost:${PORT}`);
     });
@@ -31,13 +32,10 @@ mongoose.connect(process.env.MONGODB_URI)
   });
 
 // ------------------- REST API -------------------
-
-
 app.get("/api/students", async (req, res) => {
   const students = await Student.find();
   res.json(students);
 });
-
 
 app.post("/api/students", async (req, res) => {
   try {
@@ -48,7 +46,6 @@ app.post("/api/students", async (req, res) => {
   }
 });
 
-
 app.put("/api/students/:id", async (req, res) => {
   try {
     const student = await Student.findByIdAndUpdate(req.params.id, req.body, { new: true });
@@ -57,7 +54,6 @@ app.put("/api/students/:id", async (req, res) => {
     res.status(400).json({ error: err.message });
   }
 });
-
 
 app.delete("/api/students/:id", async (req, res) => {
   try {
