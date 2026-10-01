@@ -67,7 +67,7 @@ function App() {
   return (
     <div style={{ padding: "40px", maxWidth: "900px", margin: "auto", fontFamily: "Arial, sans-serif", color: "#fff" }}>
       <h1 style={{ textAlign: "center", marginBottom: "30px", fontSize: "32px", whiteSpace: "nowrap" }}>
-        Quản lý Danh sách Sinh Viên
+        Danh sách Sinh Viên lớp DH23TIN08
       </h1>
       
       {/* Danh sách sinh viên */}
