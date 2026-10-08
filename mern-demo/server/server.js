@@ -11,16 +11,35 @@ const Student = require("./models/Student");
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-app.use(cors());
+// Cấu hình CORS linh hoạt cho Production
+const allowedOrigins = [
+  process.env.CLIENT_URL,
+  'http://localhost:5173',
+  'http://localhost:3000'
+];
+
+app.use(cors({
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin) || process.env.NODE_ENV !== 'production') {
+      callback(null, true);
+    } else {
+      callback(null, true);
+    }
+  },
+  credentials: true
+}));
+
 app.use(express.json());
 
 // API Test
 app.get("/api/hello", (req, res) => {
-  res.json({ message: "Backend đang hoạt động!" });
+  res.json({ message: "Backend đã được Auto-Deploy thành công!" });
 });
 
 // Kết nối MongoDB Atlas
-mongoose.connect(process.env.MONGO_URI)   // dùng đúng tên biến trong .env
+const MONGO_URL = process.env.MONGO_URI || "mongodb+srv://huyle_user:Letruonghuy211@cluster0.lzelvpa.mongodb.net/cloud-lab?retryWrites=true&w=majority";
+
+mongoose.connect(MONGO_URL)
   .then(() => {
     console.log("✅ Kết nối MongoDB Atlas thành công!");
     app.listen(PORT, () => {
